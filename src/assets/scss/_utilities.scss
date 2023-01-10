@@ -1,0 +1,80 @@
+// Background
+.bg-blured {
+	backdrop-filter: blur(5px);
+	background-color: rgba($color: $black, $alpha: 0.25);
+}
+.overlay {
+	background-color: rgba($color: $black, $alpha: 0.6);
+}
+
+// height
+.min-75-vh {
+	min-height: 75vh;
+}
+
+// Text
+.fw-extralight {
+	font-weight: 200;
+}
+.fw-semibold {
+	font-weight: 500;
+}
+.fs-sm {
+	font-size: 0.875rem;
+}
+.fs-xs {
+	font-size: 0.75rem;
+}
+.link {
+	text-decoration: none;
+}
+.text-justify {
+	text-align: justify;
+}
+
+// Button
+.btn,
+button {
+	font-weight: 700;
+}
+
+// Image
+.objectfit-cover {
+	object-fit: cover;
+}
+
+// z-index
+.z-index {
+	&-1 {
+		z-index: 1;
+	}
+	&-2 {
+		z-index: 2;
+	}
+	&-3 {
+		z-index: 3;
+	}
+	&-max {
+		z-index: 1000;
+	}
+}
+
+// overflow
+.overflow-scroll {
+	overflow: scroll;
+}
+
+// flex
+.flex-wrapper::after {
+	content: "";
+	flex: auto;
+}
+.centered {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.word-break {
+	word-break: break-all;
+}
