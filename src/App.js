@@ -1,16 +1,22 @@
 import './assets/scss/app.scss';
-import NavigationBar from './component/layouts/NavigationBar';
-import Detail from './pages/Detail';
-import Home from './pages/Home';
-import Landing from './pages/Landing';
+import Navigation from './component/layouts/Navigation';
+// import Detail from './pages/Detail';
+// import EditProfile from './pages/EditProfile';
+// import Hired from './pages/Hired';
+import Upload from './pages/Upload';
+// import Home from './pages/Home';
+// import Landing from './pages/Landing';
 
 function App() {
   return (
 		<>
       {/* <Landing /> */}
-      <NavigationBar/>
+      <Navigation />
       {/* <Home /> */}
-      <Detail/>
+      {/* <Detail/> */}
+      {/* <EditProfile/> */}
+      {/* <Hired/> */}
+      <Upload/>
 		</>
   );
 }

@@ -70,8 +70,8 @@ export default function Detail() {
 									? thumbsSwiper
 									: null,
 						}}
-						modules={[ Navigation, Thumbs]}
-						className="project-images-slider">
+						modules={[Navigation, Thumbs]}
+						className="project-images-slider mb-3">
 						{images.map((item, index) => (
 							<SwiperSlide key={index}>
 								<Image
@@ -87,8 +87,8 @@ export default function Detail() {
 						spaceBetween={10}
 						slidesPerView={4}
 						watchSlidesProgress={true}
-						modules={[ Navigation, Thumbs]}
-						className="mySwiper">
+						modules={[Navigation, Thumbs]}
+						className="mySwiper project-images-slider-thumbs">
 						{images.map((item, index) => (
 							<SwiperSlide key={index}>
 								<div className="project-images-slider-thumbs-wrapper">
@@ -97,6 +97,7 @@ export default function Detail() {
 										src={item}
 										alt="project images"
 									/>
+									<div className="overlay rounded-3"></div>
 								</div>
 							</SwiperSlide>
 						))}
