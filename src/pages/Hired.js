@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
 	Button,
 	Col,
@@ -9,7 +10,11 @@ import {
 	Row,
 } from "react-bootstrap";
 import calendar from "../assets/icons/calendar.svg";
+import OfferModal from "../component/modal/OfferModal";
 export default function Hired() {
+
+	// offer modal
+	const [openOfferModal, setOpenOfferModal] = useState(false);
 	return (
 		<>
 			<Container className="py-5" style={{ maxWidth: "880px" }}>
@@ -88,12 +93,17 @@ export default function Hired() {
 						</Button>
 						<Button
 							variant="primary"
-							className="text-white px-4 py-2">
+							className="text-white px-4 py-2"
+							onClick={() => setOpenOfferModal(true)}>
 							Bidding
 						</Button>
 					</div>
 				</Form>
 			</Container>
+			<OfferModal
+				show={openOfferModal}
+				setOpenOfferModal={() => setOpenOfferModal(false)}
+			/>
 		</>
 	);
 }

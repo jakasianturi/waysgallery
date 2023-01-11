@@ -41,7 +41,7 @@ export default function Navigation() {
 								/>
 							</Dropdown.Toggle>
 
-							<Dropdown.Menu className=" mt-3 shadow border-0">
+							<Dropdown.Menu className=" mt-3 shadow-sm border-0">
 								<a
 									href="/profile"
 									className="dropdown-item fw-bold">
@@ -82,7 +82,6 @@ export default function Navigation() {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
-			;
 		</>
 	);
 }

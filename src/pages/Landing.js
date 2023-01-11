@@ -1,9 +1,11 @@
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
+import { Col, Container, Image, Row } from "react-bootstrap";
 import logo from "../assets/images/logo.svg"
 import programmer from "../assets/images/programmer.svg"
 import shape1 from "../assets/shapes/shape1.svg"
 import shape2 from "../assets/shapes/shape2.svg"
 import shape3 from "../assets/shapes/shape3.svg"
+import LoginModal from "../component/auth/LoginModal";
+import RegisterModal from "../component/auth/RegisterModal";
 
 export default function Landing(){
     return (
@@ -54,16 +56,8 @@ export default function Landing(){
 								gather to share their work with other creators
 							</p>
 							<div className="d-flex gap-3">
-								<Button
-									variant="primary"
-									className="text-white px-4 py-2">
-									Join Now
-								</Button>
-								<Button
-									variant="secondary"
-									className="text-black px-4 py-2">
-									Login
-								</Button>
+								<RegisterModal/>
+								<LoginModal />
 							</div>
 						</Col>
 						<Col md="6">

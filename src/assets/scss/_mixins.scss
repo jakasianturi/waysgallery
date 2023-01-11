@@ -316,7 +316,10 @@
 		font-size: 14px;
 	}
 }
-
+.add-image .custom-border {
+	width: 120px;
+	height: 120px;
+}
 @include media-breakpoint-down(sm) {
 	.add-image .custom-border {
 		width: 90px;
@@ -326,5 +329,46 @@
 			height: 60px;
 		}
 	}
-
+}
+.icon-shape {
+	@include media-breakpoint-down(sm) {
+		&.rectangle {
+			width: 200px;
+		}
+	}
+}
+.img-card {
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 240px;
+	img {
+		transition: transform 0.2s;
+		width: 300px;
+		height: 300px;
+	}
+	&:hover {
+		img {
+			transform: scale(1.5);
+		}
+		& > .overlay {
+			opacity: 1;
+		}
+	}
+	.overlay {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		opacity: 0;
+	}
+}
+.custom-table {
+	tr, td, th, tbody, tfoot, thead {
+		border-color: rgba($color: $black, $alpha: 0.5);
+		color: $black;
+		vertical-align: middle;
+	}
 }
