@@ -162,7 +162,7 @@
 }
 
 .mansory-custom img {
-	max-height: 300px;
+	max-height: 200px;
 	height: auto;
 	margin: 0 1rem 1rem 0;
 	flex: 1 0 auto;
@@ -184,7 +184,7 @@
 				top: 0;
 				left: 0;
 				width: 100%;
-				height: 400px;
+				height: 300px;
 				object-fit: cover;
 			}
 		}
@@ -366,9 +366,21 @@
 	}
 }
 .custom-table {
-	tr, td, th, tbody, tfoot, thead {
+	tr,
+	td,
+	th,
+	tbody,
+	tfoot,
+	thead {
 		border-color: rgba($color: $black, $alpha: 0.5);
 		color: $black;
 		vertical-align: middle;
+	}
+}
+.img-zoom {
+	transition: transform 0.5s;
+	cursor: pointer;
+	&:hover {
+		transform: scale(1.2);
 	}
 }

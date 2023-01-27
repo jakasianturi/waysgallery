@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import {
+	Alert,
 	Button,
 	Col,
 	Container,
@@ -7,17 +9,33 @@ import {
 	InputGroup,
 	Row,
 } from "react-bootstrap";
+import { useQuery } from "react-query";
+import {  useNavigate } from "react-router-dom";
 import search from "../assets/icons/search.svg";
-import img1 from "../assets/images/dummy/img1.jpg";
-import img2 from "../assets/images/dummy/img2.jpg";
-import img3 from "../assets/images/dummy/img3.jpg";
-import img4 from "../assets/images/dummy/img4.jpg";
-import img5 from "../assets/images/dummy/img5.jpg";
-import img6 from "../assets/images/dummy/img6.jpg";
-import img7 from "../assets/images/dummy/img7.jpg";
+import thumbnail from "../assets/images/thumbnail.jpg";
+import Loader from "../component/feature/Loader";
+import { API } from "../config/api";
 
 export default function Home() {
-	const images = [img1, img2, img3, img4, img5, img6, img7];
+	// navigate
+	const navigate = useNavigate()
+	// init post data
+	const [postsResult, setPostsResult] = useState(null);
+	// get data
+	let { data: posts } = useQuery(
+		"postsCache",
+		async () => {
+			const response = await API.get("/posts");
+			return response.data.data;
+		}
+	);
+	useEffect(() => {
+		if (posts) setPostsResult(posts);
+	}, [posts]);
+	if (!postsResult) {
+		return <Loader />;
+	}
+	// console.log(postsResult)
 	return (
 		<>
 			<Container className="py-3">
@@ -52,16 +70,32 @@ export default function Home() {
 				</Row>
 				<h5 className="my-4">today's post</h5>
 				<div className="mansory-custom">
-					{images.map((image, i) => (
+					{postsResult.posts?.length !== 0 ? (
 						<>
-							<Image
-								key={i}
-								alt="Image"
-								src={image}
-								className="rounded-3 shadow-sm objectfit-cover border-secondary border border-1"
-							/>
+							{postsResult.posts.map((item, index) => (
+								// console.log(item)
+									<Image
+										key={index}
+										onClick={() =>
+											navigate(`/post/${item.id}`)
+										}
+										alt="Image"
+										src={
+											item.photos[0]
+												? item.photos[0].image
+												: thumbnail
+										}
+										className="img-zoom rounded-3 shadow-sm objectfit-cover border-0"
+									/>
+							))}
 						</>
-					))}
+					) : (
+						<>
+							<Alert variant="dark">
+								Sorry, there is no list of data yet.
+							</Alert>
+						</>
+					)}
 				</div>
 			</Container>
 		</>

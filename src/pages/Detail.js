@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
-import avatar from "../assets/images/avatar.png";
+import avatar from "../assets/images/avatar.svg";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -9,50 +9,103 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 // import required modules
 import { Navigation, Thumbs } from "swiper";
+import { useQuery } from "react-query";
+import { API } from "../config/api";
+import Loader from "../component/feature/Loader";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import parse from "html-react-parser";
+import { UserContext } from "../context/UserContext";
 
-import img1 from "../assets/images/dummy/img1.jpg";
-import img2 from "../assets/images/dummy/img2.jpg";
-import img3 from "../assets/images/dummy/img3.jpg";
-import img4 from "../assets/images/dummy/img4.jpg";
-import img5 from "../assets/images/dummy/img5.jpg";
-import img6 from "../assets/images/dummy/img6.jpg";
-import img7 from "../assets/images/dummy/img7.jpg";
 export default function Detail() {
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
-    const images = [img1, img2, img3, img4, img5, img6, img7];
+	// state userContect
+	const [state, dispatch] = useContext(UserContext);
+	// navigate
+	const navigate = useNavigate();
+	// swiper
+	const [thumbsSwiper, setThumbsSwiper] = useState(null);
+	// init post data
+	const [postResult, setPostResult] = useState(null);
+	// get data
+	const { id } = useParams(); // id from url
+	let { data: post } = useQuery("postCache", async () => {
+		const response = await API.get(`/post/${id}`);
+		return response.data.data;
+	});
+	useEffect(() => {
+		if (post) setPostResult(post);
+	}, [post]);
+
+	if (!postResult) {
+		return <Loader />;
+	}
+	// console.log(postResult)
 	return (
 		<>
-			<Container style={{ maxWidth: "800px" }}>
+			<Container className="py-5" style={{ maxWidth: "800px" }}>
 				<Row className="py-3">
 					<Col md="8" className="mb-3 mb-md-0">
 						<Row>
 							<Col xs="auto">
 								<Image
-									src={avatar}
+									onClick={() =>
+										navigate(
+											`/user/${postResult.post.createdBy?.id}`
+										)
+									}
+									src={
+										postResult.post.createdBy.avatar
+											? postResult.post.createdBy.avatar
+											: avatar
+									}
 									alt="WaysGallery"
 									className="d-block rounded-circle objectfit-cover"
 									width="48"
 									height="48"
+									style={{ cursor: "pointer" }}
 								/>
 							</Col>
 							<Col xs="auto">
-								<h5 className="mb-0">Robo-x Landing Page</h5>
-								<span>Geralt</span>
+								<h5 className="mb-0">
+									{postResult.post?.title}
+								</h5>
+								<span>
+									{postResult.post.createdBy?.fullName}
+								</span>
 							</Col>
 						</Row>
 					</Col>
 					<Col md="4" className="d-flex">
 						<div className="ms-sm-auto">
-							<Button
-								variant="secondary"
-								className="text-black px-4 py-2 me-3 btn-sm">
-								Follow
-							</Button>
-							<Button
-								variant="primary"
-								className="text-white px-4 py-2 btn-sm">
-								Hire
-							</Button>
+							{state.user?.email ===
+							postResult.post.createdBy?.email ? (
+								<>
+									<Link
+										to={`/profile`}
+										className="btn btn-primary text-white px-4 py-2 btn-sm">
+										See Profile
+									</Link>
+								</>
+							) : (
+								<>
+									{/* <Button
+										variant="secondary"
+										className="text-black px-4 py-2 me-3 btn-sm">
+										Follow
+									</Button> */}
+									<Button
+										variant="primary"
+										className="text-white px-4 py-2 me-3 btn-sm"
+										onClick={() =>
+											navigate(`/hired`, {
+												state: {
+													orderTo: postResult.post.createdBy?.id
+												},
+											})
+										}>
+										Hire
+									</Button>
+								</>
+							)}
 						</div>
 					</Col>
 				</Row>
@@ -72,11 +125,12 @@ export default function Detail() {
 						}}
 						modules={[Navigation, Thumbs]}
 						className="project-images-slider mb-3">
-						{images.map((item, index) => (
+						{postResult.post?.photos.map((item, index) => (
+							// console.log(item)
 							<SwiperSlide key={index}>
 								<Image
 									className="rounded-3"
-									src={item}
+									src={item.image}
 									alt="project images"
 								/>
 							</SwiperSlide>
@@ -89,12 +143,12 @@ export default function Detail() {
 						watchSlidesProgress={true}
 						modules={[Navigation, Thumbs]}
 						className="mySwiper project-images-slider-thumbs">
-						{images.map((item, index) => (
+						{postResult.post?.photos.map((item, index) => (
 							<SwiperSlide key={index}>
 								<div className="project-images-slider-thumbs-wrapper">
 									<Image
 										className="rounded-3"
-										src={item}
+										src={item.image}
 										alt="project images"
 									/>
 									<div className="overlay rounded-3"></div>
@@ -104,21 +158,7 @@ export default function Detail() {
 					</Swiper>
 				</div>
 				<div id="description" className="mt-5">
-					<p>
-						👋 Say Hello{" "}
-						<span className="text-primary">
-							<a
-								href="mailto:geralt@gmail.com"
-								className="link fw-semibold">
-								geralt@gmail.com
-							</a>
-						</span>
-					</p>
-					<p>
-						Hey, guys! Super excited to share my new web app
-						interface and elements that I recently worked on. Hope
-						you enjoyed it. Thanks for your likes and comments!
-					</p>
+					{parse(postResult.post?.description)}
 				</div>
 			</Container>
 		</>

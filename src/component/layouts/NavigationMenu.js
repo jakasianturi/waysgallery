@@ -6,34 +6,53 @@ import {
 	Navbar,
 } from "react-bootstrap";
 import logo from "../../assets/images/logo.svg";
-import avatar from "../../assets/images/avatar.png";
+import avatar from "../../assets/images/avatar.svg";
 import user_icon from "../../assets/icons/user.svg";
 import order from "../../assets/icons/order.svg";
 import logout from "../../assets/icons/logout.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 
-export default function Navigation() {
+export default function NavigationMenu() {
+	// navigate
+	const navigate = useNavigate();
+	// state userContect
+	const [state, dispatch] = useContext(UserContext);
+	// handle logout
+	const handleLogout = () => {
+		dispatch({
+			type: "LOGOUT",
+		});
+		navigate("/")
+	};
 	return (
 		<>
 			<Navbar className="border-bottom">
 				<Container>
-					<Navbar.Brand href="#home">
+					<Link to="home">
 						<Image
 							src={logo}
 							alt="WaysGallerry"
 							width="126"
 							className="mw-100"
 						/>
-					</Navbar.Brand>
+					</Link>
 					<Navbar.Collapse className="justify-content-end">
 						<Button
 							variant="primary"
-							className="text-white px-4 py-2 me-4 btn-sm">
+							className="text-white px-4 py-2 me-4 btn-sm"
+							onClick={() => navigate(`/upload`)}>
 							Upload
 						</Button>
 						<Dropdown align="end" className="custom_dropdown">
 							<Dropdown.Toggle className="no-carret">
 								<Image
-									src={avatar}
+									src={
+										state.user.avatar
+											? state.user.avatar
+											: avatar
+									}
 									alt="WaysGallery"
 									className="d-block rounded-circle objectfit-cover"
 									width="48"
@@ -41,9 +60,9 @@ export default function Navigation() {
 								/>
 							</Dropdown.Toggle>
 
-							<Dropdown.Menu className=" mt-3 shadow-sm border-0">
-								<a
-									href="/profile"
+							<Dropdown.Menu className=" mt-3 shadow-sm border-0 z-index-max">
+								<Link
+									to="/profile"
 									className="dropdown-item fw-bold">
 									<img
 										width="24"
@@ -52,9 +71,9 @@ export default function Navigation() {
 										className="icon me-3"
 									/>
 									Profile
-								</a>
-								<a
-									href="/payment"
+								</Link>
+								<Link
+									to="/order"
 									className="dropdown-item fw-bold">
 									<img
 										width="24"
@@ -63,12 +82,13 @@ export default function Navigation() {
 										className="icon me-3"
 									/>
 									Order
-								</a>
+								</Link>
 								<Dropdown.Divider className="border-3 border-top" />
 
 								<button
 									type="button"
-									className="dropdown-item btn btn-link link fw-normal">
+									className="dropdown-item btn btn-link link fw-normal"
+									onClick={handleLogout}>
 									<img
 										width="24"
 										src={logout}

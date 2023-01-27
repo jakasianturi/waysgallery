@@ -1,9 +1,4 @@
-import {
-	Col,
-	Container,
-	Image,
-	Row,
-} from "react-bootstrap";
+import { Col, Container, Image, Row } from "react-bootstrap";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -12,21 +7,32 @@ import "swiper/css/thumbs";
 // import required modules
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper";
-
-import img1 from "../assets/images/dummy/img1.jpg";
-import img2 from "../assets/images/dummy/img2.jpg";
-import img3 from "../assets/images/dummy/img3.jpg";
-import img4 from "../assets/images/dummy/img4.jpg";
-import img5 from "../assets/images/dummy/img5.jpg";
-import img6 from "../assets/images/dummy/img6.jpg";
-import img7 from "../assets/images/dummy/img7.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DownloadModal from "../component/modal/DownloadModal";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { API } from "../config/api";
+import Loader from "../component/feature/Loader";
+import parse from "html-react-parser";
 export default function ViewProject() {
 	const [thumbsSwiper, setThumbsSwiper] = useState(null);
-	const images = [img1, img2, img3, img4, img5, img6, img7];
 	// download modal
 	const [openDownloadModal, setOpenDownloadModal] = useState(false);
+	// init post data
+	const [projectResult, setProjectResult] = useState(null);
+	// get data
+	const { hired_id } = useParams(); // id from url
+	let { data: project } = useQuery("projectCache", async () => {
+		const response = await API.get(`/project/detail/${hired_id}`);
+		return response.data.data;
+	});
+	useEffect(() => {
+		if (project) setProjectResult(project);
+	}, [project]);
+	if (!projectResult) {
+		return <Loader />;
+	}
+	// console.log(projectResult)
 	return (
 		<>
 			<Container className="py-5" style={{ maxWidth: "880px" }}>
@@ -48,19 +54,32 @@ export default function ViewProject() {
 								}}
 								modules={[Navigation, Thumbs]}
 								className="project-images-slider mb-3">
-								{images.map((item, index) => (
-									<SwiperSlide key={index}>
-										<Image
-											className="rounded-3"
-											src={item}
-											alt="project images"
-											style={{ cursor: "pointer" }}
-											onClick={() =>
-												setOpenDownloadModal(true)
-											}
-										/>
-									</SwiperSlide>
-								))}
+								{projectResult.project?.length !== 0 ? (
+									<>
+										{projectResult.project.photos?.map(
+											(item, index) => (
+												<SwiperSlide key={index}>
+													<Image
+														key={index}
+														className="rounded-3"
+														src={item.image}
+														alt="project images"
+														style={{
+															cursor: "pointer",
+														}}
+														onClick={() =>
+															setOpenDownloadModal(
+																true
+															)
+														}
+													/>
+												</SwiperSlide>
+											)
+										)}
+									</>
+								) : (
+									<></>
+								)}
 							</Swiper>
 							<Swiper
 								onSwiper={setThumbsSwiper}
@@ -69,30 +88,32 @@ export default function ViewProject() {
 								watchSlidesProgress={true}
 								modules={[Navigation, Thumbs]}
 								className="mySwiper project-images-slider-thumbs">
-								{images.map((item, index) => (
-									<SwiperSlide key={index}>
-										<div className="project-images-slider-thumbs-wrapper">
-											<Image
-												className="rounded-3"
-												src={item}
-												alt="project images"
-											/>
-											<div className="overlay rounded-3"></div>
-										</div>
-									</SwiperSlide>
-								))}
+								{projectResult.project?.length !== 0 ? (
+									<>
+										{projectResult.project.photos?.map(
+											(item, index) => (
+												<SwiperSlide key={index}>
+													<div className="project-images-slider-thumbs-wrapper">
+														<Image
+															className="rounded-3"
+															src={item?.image}
+															alt="project images"
+														/>
+														<div className="overlay rounded-3"></div>
+													</div>
+												</SwiperSlide>
+											)
+										)}
+									</>
+								) : (
+									<></>
+								)}
 							</Swiper>
 						</div>
 					</Col>
 					<Col md="5">
 						<div id="description" className="mt-5">
-							<p>
-								all with respect, I thank you for entrusting me
-								as the project implementer, sir, hopefully with
-								the completion of this project we can work
-								together again in the future
-							</p>
-							<p>Thank you very much</p>
+							{parse(projectResult.project?.description)}
 						</div>
 					</Col>
 				</Row>

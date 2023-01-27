@@ -10,7 +10,7 @@ import RegisterModal from "../component/auth/RegisterModal";
 export default function Landing(){
     return (
 		<>
-			<div className="position-relative min-vh-100">
+			<div className="position-relative d-flex justify-content-center align-items-center min-vh-100">
 				<div
 					className="icon-shape shape1"
 					style={{ top: "0", left: "0" }}>
