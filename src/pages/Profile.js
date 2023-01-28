@@ -86,7 +86,7 @@ export default function Profile() {
 											navigation={true}
 											modules={[Navigation]}
 											className="project-images-slider mb-3">
-											{userResult.data.arts?.map(
+											{userResult.arts?.map(
 												(item, index) => (
 													// console.log(item)
 													<SwiperSlide key={index}>

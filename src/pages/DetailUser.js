@@ -98,7 +98,7 @@ export default function DetailUser() {
 							</div>
 						</Col>
 						<Col md="8" className="z-index-max">
-							{userResult.arts?.length !== 0 ? (
+							{userResult?.arts.length !== 0 ? (
 								<>
 									<div id="swiper-image" className="my-4">
 										<Swiper
@@ -145,7 +145,7 @@ export default function DetailUser() {
 			<Container className="py-5">
 				<h5 className="mb-4">{userResult?.fullName} Works</h5>
 				<Row>
-					{userResult.arts?.length !== 0 ? (
+					{userResult?.posts.length !== 0 ? (
 						<>
 							{userResult.posts?.map((item, index) => (
 								// console.log(item)
