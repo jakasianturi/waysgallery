@@ -21,6 +21,7 @@ export default function EditProfile() {
 	const MySwal = withReactContent(Swal);
 	// btn Loader
 	const [btnLoader, setBtnLoader] = useState(false);
+	const [artLoader, setArtLoader] = useState(false);
 
 	// init state
 	const [artsResult, setArtsResult] = useState(null);
@@ -42,10 +43,11 @@ export default function EditProfile() {
 	// dropzone
 	const onDrop = useCallback(
 		async (acceptedFiles) => {
+			setArtLoader(true)
 			const formInputValue = new FormData();
 			for (let i = 0; i < acceptedFiles.length; i++) {
 				formInputValue.append(
-					"arts",
+					"images",
 					acceptedFiles[i],
 					acceptedFiles[i].name
 				);
@@ -70,6 +72,7 @@ export default function EditProfile() {
 					timer: 1500,
 				});
 				refetch();
+				setArtLoader(false);
 			} else {
 				MySwal.fire({
 					icon: "error",
@@ -77,6 +80,8 @@ export default function EditProfile() {
 					showConfirmButton: false,
 					timer: 1500,
 				});
+				refetch();
+				setArtLoader(false);
 			}
 		},
 		[MySwal, refetch]
@@ -153,18 +158,25 @@ export default function EditProfile() {
 						md="8"
 						{...getRootProps()}
 						className="position-relative custom-image-input  p-0">
-						<p className="mb-0 desc">
-							<span className="text-primary fw-semibold">
-								Upload
-							</span>{" "}
-							Your Best Art
-						</p>
+						{!artLoader ? (
+							<>
+								<p className="mb-0 desc">
+									<span className="text-primary fw-semibold">
+										Upload
+									</span>{" "}
+									Your Best Art
+								</p>
 
-						<Form.Control
-							type="file"
-							{...getInputProps()}
-							className="img-drag"
-						/>
+								<Form.Control
+									type="file"
+									{...getInputProps()}
+									className="img-drag"
+								/>
+							</>
+						) : (
+							<Loader />
+						)}
+
 						{/* <Image
 							src={img1}
 							alt="thumbnail"
