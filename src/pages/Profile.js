@@ -49,8 +49,8 @@ export default function Profile() {
 						<Col md="4" className="z-index-3 mb-3 mb-md-0">
 							<Image
 								src={
-									userResult?.avatar
-										? userResult?.avatar
+									userResult.data?.avatar
+										? userResult.data?.avatar
 										: avatar
 								}
 								alt="WaysGallery"
@@ -58,8 +58,8 @@ export default function Profile() {
 								width="90"
 								height="90"
 							/>
-							<h5 className="mb-4">{userResult?.fullName}</h5>
-							<h1 className="mb-5">{userResult?.greeting}</h1>
+							<h5 className="mb-4">{userResult.data?.fullName}</h5>
+							<h1 className="mb-5">{userResult.data?.greeting}</h1>
 							<Button
 								variant="primary"
 								className="text-white px-4 py-2 btn-sm"
@@ -68,7 +68,7 @@ export default function Profile() {
 							</Button>
 						</Col>
 						<Col md="8" className="z-index-3">
-							{userResult.arts?.length !== 0 ? (
+							{userResult.data.arts?.length !== 0 ? (
 								<>
 									<div id="swiper-image" className="my-4">
 										<Swiper
@@ -82,7 +82,7 @@ export default function Profile() {
 											navigation={true}
 											modules={[Navigation]}
 											className="project-images-slider mb-3">
-											{userResult.arts?.map(
+											{userResult.data.arts?.map(
 												(item, index) => (
 													// console.log(item)
 													<SwiperSlide key={index}>
@@ -113,11 +113,11 @@ export default function Profile() {
 				</Container>
 			</div>
 			<Container className="py-5">
-				<h5 className="mb-4">{userResult?.fullName} Works</h5>
+				<h5 className="mb-4">{userResult.data?.fullName} Works</h5>
 				<Row>
-					{userResult.arts?.length !== 0 ? (
+					{userResult.data.arts?.length !== 0 ? (
 						<>
-							{userResult.posts?.map((item, index) => (
+							{userResult.data.posts?.map((item, index) => (
 								// console.log(item)
 								<Col
 									key={item.id}
