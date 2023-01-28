@@ -7,6 +7,7 @@ import { UserContext } from "../../context/UserContext";
 import { API, setAuthToken } from "../../config/api";
 import { useMutation } from "react-query";
 import BtnLoader from "../feature/BtnLoader";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterModal() {
 	// auth modal context
@@ -32,6 +33,9 @@ export default function RegisterModal() {
 
 	// state userContect
 	const [state, dispatch] = useContext(UserContext);
+
+	// navigate
+	const navigate = useNavigate();
 
 	// submit form data
 	const handleOnSubmit = useMutation(async (e) => {
@@ -74,6 +78,7 @@ export default function RegisterModal() {
 				hLModal(true);
 				setBtnLoader(false);
 				setMessage(null);
+				navigate("/");
 			} else {
 				const alert = (
 					<Alert variant="danger" className="py-2 fs-sm">
@@ -94,7 +99,7 @@ export default function RegisterModal() {
 			setBtnLoader(false);
 		}
 	});
-	
+
 	// console.log(errorForm);
 	return (
 		<>
